@@ -5,13 +5,23 @@ const PARAMETER = {
 };
 
 export const getData = {
-  // url: 'database/dataBase.json',
-  url: 'https://raw.githubusercontent.com/tereshka/ikea-shop/main/database/dataBase.json',
+  // url: https://raw.githubusercontent.com/tereshka/ikea-shop/main/database/dataBase.json
+  url: 'database/dataBase.json',
+
+   async getData (url) {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response}`);
+    }
+
+    return await response.json();
+  },
 
   get(process) {
-    fetch(this.url)
-      .then(res => res.json())
-      .then(process);
+    this.getData(this.url)
+      .then(process)
+      .catch((err) => console.error(err));
   },
 
   wishList(list, callback) {
